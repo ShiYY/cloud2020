@@ -1,0 +1,17 @@
+server:
+  port: 8001 # 服务端口号
+
+spring:
+  application:
+    name: cloud-payment-service # 服务名称
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource # 当前数据源操作类型
+    driver-class-name: org.gjt.mm.mysql.Driver   # mysql驱动包
+    # mysql5.7以后 进行了安全加固 如果不加useSSL=false会报一个ssl安全加固的异常
+    url: jdbc:mysql://localhost:3306/db2019?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+
+mybatis: # mybatis的知识点还是要回顾一下的 背下来
+  mapperLocations: classpath:mapper/*.xml # resource目录下mapper目录下的*.xml文件
+  type-aliases-package: com.shiyang.springcloud.entities # 所有Entity别名类所在包(方便后面的mapper.xml的配置)
