@@ -12,6 +12,12 @@
     <artifactId>cloud-provider-payment8001</artifactId>
 
     <dependencies>
+        <!-- 引入自己定义的api通用包-->
+        <dependency>
+            <groupId>com.shiyang.springcloud</groupId>
+            <artifactId>cloud-api-commons</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- web 和 actuator几乎永远绑定一块 这到后面的图形化显示 坐标监控 图形处理非常重要 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
