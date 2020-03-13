@@ -4,12 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author shiyang
- * @create 2020-03-11 11:42 下午
+ * @author shiyang date: 2020/3/13
  */
 @SpringBootApplication
-public class PaymentApplication {
+public class OrderApplication {
     public static void main(String[] args) {
-        SpringApplication.run(PaymentApplication.class, args);
+        SpringApplication.run(OrderApplication.class, args);
     }
 }
