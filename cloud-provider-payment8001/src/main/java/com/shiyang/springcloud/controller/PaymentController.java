@@ -1,23 +1,37 @@
 package com.shiyang.springcloud.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import com.shiyang.springcloud.entities.CommonResult;
 import com.shiyang.springcloud.entities.Payment;
 import com.shiyang.springcloud.service.PaymentService;
 
+import java.util.List;
+
 /**
  * @author shiyang date: 2020/3/13
  */
 @RestController
 public class PaymentController {
-    @Autowired
-    private PaymentService paymentService;
+    private final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
     @Value("${server.port}")
     private String serverPort;
+
+    private final PaymentService paymentService;
+    private final DiscoveryClient discoveryClient;
+
+    @Autowired
+    public PaymentController(PaymentService paymentService, DiscoveryClient discoveryClient) {
+        this.paymentService = paymentService;
+        this.discoveryClient = discoveryClient;
+    }
 
     @PostMapping(value = "/payment/create")
     public CommonResult create(@RequestBody Payment payment) {
@@ -39,5 +53,20 @@ public class PaymentController {
         }
         // 404 约定好的错误码
         return new CommonResult(404, "没有对应记录, 查询id: " + id, null);
+    }
+
+    @GetMapping(value = "payment/discovery")
+    public Object discovery() {
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            logger.info("****service: {}", service);
+        }
+
+        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        for (ServiceInstance instance : instances) {
+            logger.info(instance.getServiceId() + "\t" + instance.getHost() + "\t" + instance.getPort() + "\t" + instance.getUri());
+        }
+
+        return this.discoveryClient;
     }
 }
